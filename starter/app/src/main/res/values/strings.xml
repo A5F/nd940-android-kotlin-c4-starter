@@ -1,4 +1,6 @@
 <resources>
+    <string name="register">Register / Login</string>
+    <string name="login_needed">Login Needed</string>
     <string name="app_name">Location Reminders</string>
     <string name="error_happened">Error happened</string>
     <string name="retry">Retry</string>
