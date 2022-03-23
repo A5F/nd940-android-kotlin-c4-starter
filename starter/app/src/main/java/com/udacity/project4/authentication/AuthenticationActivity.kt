@@ -22,7 +22,7 @@ import com.udacity.project4.locationreminders.RemindersActivity
 class AuthenticationActivity : AppCompatActivity() {
     private lateinit var viewBinding: ActivityAuthenticationBinding
 
-    val signInLauncher = registerForActivityResult(
+    private val signInLauncher = registerForActivityResult(
         FirebaseAuthUIActivityResultContract()
     ) { res ->
         this.onSignInResult(res)
@@ -57,32 +57,10 @@ class AuthenticationActivity : AppCompatActivity() {
                     .build()
             )
         }
-
-//
-
-
-
-    }
-
-    fun doLogin(){
-        //a bonus is to customize the sign in flow to look nice using :
-        //https://github.com/firebase/FirebaseUI-Android/blob/master/auth/README.md#custom-layout
-        val providers = arrayListOf(
-            AuthUI.IdpConfig.EmailBuilder().build(),
-            AuthUI.IdpConfig.GoogleBuilder().build()
-        )
-
-        AuthUI.getInstance().createSignInIntentBuilder()
-            .setIsSmartLockEnabled(false)
-            .setAvailableProviders(providers)
-            .setLogo(R.drawable.map)
-            .setTheme(R.style.LoginScreenTheme)
-            .build()
-
     }
 
     private fun onSignInResult(result: FirebaseAuthUIAuthenticationResult) {
-        val response = result.idpResponse
+        //val response = result.idpResponse
         if (result.resultCode == RESULT_OK) {
             startActivity(Intent(this, RemindersActivity::class.java))
             finish()
