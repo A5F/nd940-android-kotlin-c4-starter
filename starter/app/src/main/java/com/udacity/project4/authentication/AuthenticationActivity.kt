@@ -65,7 +65,7 @@ class AuthenticationActivity : AppCompatActivity() {
             startActivity(Intent(this, RemindersActivity::class.java))
             finish()
         } else {
-            Toast.makeText(this, "Login Failed, Please try again!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Autenticazione fallita, riprova più tardi", Toast.LENGTH_SHORT).show()
         }
     }
 
