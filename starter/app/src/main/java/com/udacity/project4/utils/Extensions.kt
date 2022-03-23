@@ -11,7 +11,9 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.location.Geofence
 import com.udacity.project4.base.BaseRecyclerViewAdapter
+import com.udacity.project4.locationreminders.reminderslist.ReminderDataItem
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -66,3 +68,18 @@ fun View.fadeOut() {
         }
     })
 }
+
+
+fun ReminderDataItem.getGeoFence(): Geofence {
+    return Geofence.Builder()
+        .setRequestId(this.id)
+        .setCircularRegion(
+            this.latitude?:0.0,
+            this.longitude?:0.0,
+            Constants.GEOFENCE_RADIUS_IN_METERS
+        )
+        .setExpirationDuration(Geofence.NEVER_EXPIRE)
+        .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER)
+        .build()
+}
+
