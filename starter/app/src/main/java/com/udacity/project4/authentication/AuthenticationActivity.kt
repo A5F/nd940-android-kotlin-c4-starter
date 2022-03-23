@@ -2,7 +2,9 @@ package com.udacity.project4.authentication
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.udacity.project4.R
 import com.firebase.ui.auth.AuthMethodPickerLayout
@@ -10,6 +12,7 @@ import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
 import com.google.firebase.auth.FirebaseAuth
+import com.udacity.project4.databinding.ActivityAuthenticationBinding
 import com.udacity.project4.locationreminders.RemindersActivity
 
 /**
@@ -17,7 +20,7 @@ import com.udacity.project4.locationreminders.RemindersActivity
  * signed in users to the RemindersActivity.
  */
 class AuthenticationActivity : AppCompatActivity() {
-
+    private lateinit var viewBinding: ActivityAuthenticationBinding
 
     val signInLauncher = registerForActivityResult(
         FirebaseAuthUIActivityResultContract()
@@ -27,20 +30,32 @@ class AuthenticationActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_authentication)
-        val firebaseAuth = FirebaseAuth.getInstance()
-        // If the user was authenticated, send him to RemindersActivity
-        if (firebaseAuth.currentUser != null) {
+        viewBinding = ActivityAuthenticationBinding.inflate(LayoutInflater.from(this))
+        setContentView(viewBinding.root)
 
+        val auth = FirebaseAuth.getInstance()
+        if (auth.currentUser != null) {
             startActivity(Intent(this, RemindersActivity::class.java))
             finish()
-        }else {
-//         Implement the create account and sign in using FirebaseUI,
-    //          use sign in using email and sign in using Google
+        } else {
+            viewBinding.welcomeText.visibility = View.VISIBLE
+            viewBinding.actionLogin.visibility = View.VISIBLE
+            viewBinding.progressLoader.visibility = View.GONE
+        }
 
-            findViewById<View>(R.id.login_button).setOnClickListener {
-                doLogin()
-            }
+        val providers = arrayListOf(
+            AuthUI.IdpConfig.EmailBuilder().build(), AuthUI.IdpConfig.GoogleBuilder().build()
+        )
+
+        viewBinding.actionLogin.setOnClickListener {
+            signInLauncher.launch(
+                AuthUI.getInstance().createSignInIntentBuilder()
+                    .setIsSmartLockEnabled(false)
+                    .setAvailableProviders(providers)
+                    .setLogo(R.drawable.map)
+                    .setTheme(R.style.LoginScreenTheme)
+                    .build()
+            )
         }
 
 //
@@ -69,14 +84,10 @@ class AuthenticationActivity : AppCompatActivity() {
     private fun onSignInResult(result: FirebaseAuthUIAuthenticationResult) {
         val response = result.idpResponse
         if (result.resultCode == RESULT_OK) {
-            // Successfully signed in
-            val user = FirebaseAuth.getInstance().currentUser
-            // ...
+            startActivity(Intent(this, RemindersActivity::class.java))
+            finish()
         } else {
-            // Sign in failed. If response is null the user canceled the
-            // sign-in flow using the back button. Otherwise check
-            // response.getError().getErrorCode() and handle the error.
-            // ...
+            Toast.makeText(this, "Login Failed, Please try again!", Toast.LENGTH_SHORT).show()
         }
     }
 
