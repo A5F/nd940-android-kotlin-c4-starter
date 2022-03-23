@@ -15,6 +15,9 @@ class FakeDataSource(private val reminders: MutableList<ReminderDTO>? = mutableL
 
     override suspend fun getReminders(): Result<List<ReminderDTO>> {
         //("Return the reminders")
+        if (shouldErrorReturn) {
+            return Result.Error("Reminders not found")
+        }
         return if (reminders != null) {
             Result.Success(reminders)
         } else {

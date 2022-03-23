@@ -10,6 +10,7 @@ import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.matcher.RootMatchers
 import androidx.test.espresso.matcher.ViewMatchers
+import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import com.udacity.project4.locationreminders.RemindersActivity
@@ -21,6 +22,7 @@ import com.udacity.project4.locationreminders.reminderslist.RemindersListViewMod
 import com.udacity.project4.locationreminders.savereminder.SaveReminderViewModel
 import com.udacity.project4.util.DataBindingIdlingResource
 import com.udacity.project4.util.monitorActivity
+import com.udacity.project4.utils.EspressoIdlingResource
 import kotlinx.coroutines.runBlocking
 import org.hamcrest.CoreMatchers
 import org.junit.After
@@ -96,7 +98,7 @@ class RemindersActivityTest :
     }
 
 
-//    TODO: add End to End testing to the app
+//    add End to End testing to the app
 
     @Test
     fun testReminderActivityWithNoReminder() {
@@ -105,10 +107,8 @@ class RemindersActivityTest :
         val activityScenario = ActivityScenario.launch(RemindersActivity::class.java)
         dataBindingIdlingResource.monitorActivity(activityScenario)
 
-        Espresso.onView(ViewMatchers.withId(R.id.noDataTextView))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-        Espresso.onView(ViewMatchers.withId(R.id.noDataTextView))
-            .check(
+        Espresso.onView(withId(R.id.noDataTextView)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        Espresso.onView(withId(R.id.noDataTextView)).check(
                 ViewAssertions.matches(
                     ViewMatchers.withText(
                         (getApplicationContext() as Application).getString(
@@ -133,15 +133,11 @@ class RemindersActivityTest :
         val activityScenario = ActivityScenario.launch(RemindersActivity::class.java)
         dataBindingIdlingResource.monitorActivity(activityScenario)
 
-        Espresso.onView(ViewMatchers.withId(R.id.title))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-        Espresso.onView(ViewMatchers.withId(R.id.title))
-            .check(ViewAssertions.matches(ViewMatchers.withText(testData.title)))
+        Espresso.onView(withId(R.id.title)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        Espresso.onView(withId(R.id.title)).check(ViewAssertions.matches(ViewMatchers.withText(testData.title)))
 
-        Espresso.onView(ViewMatchers.withId(R.id.description))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-        Espresso.onView(ViewMatchers.withId(R.id.description))
-            .check(ViewAssertions.matches(ViewMatchers.withText(testData.description)))
+        Espresso.onView(withId(R.id.description)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        Espresso.onView(withId(R.id.description)).check(ViewAssertions.matches(ViewMatchers.withText(testData.description)))
 
         Espresso.onView(withId(R.id.location))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
@@ -169,10 +165,8 @@ class RemindersActivityTest :
 
         dataBindingIdlingResource.monitorActivity(activityScenario)
 
-        Espresso.onView(ViewMatchers.withId(R.id.noDataTextView))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-        Espresso.onView(ViewMatchers.withId(R.id.noDataTextView))
-            .check(
+        Espresso.onView(withId(R.id.noDataTextView)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        Espresso.onView(withId(R.id.noDataTextView)).check(
                 ViewAssertions.matches(
                     ViewMatchers.withText(
                         (getApplicationContext() as Application).getString(
@@ -182,7 +176,7 @@ class RemindersActivityTest :
                 )
             )
 
-        Espresso.onView(ViewMatchers.withId(R.id.addReminderFAB)).perform(ViewActions.click())
+        Espresso.onView(withId(R.id.addReminderFAB)).perform(ViewActions.click())
 
         val viewModel: SaveReminderViewModel = get()
         viewModel.reminderSelectedLocationStr.postValue(testData.location)
@@ -190,29 +184,25 @@ class RemindersActivityTest :
         viewModel.longitude.postValue(testData.longitude)
         viewModel.skipLocationForTesting = true
 
-        Espresso.onView(ViewMatchers.withId(R.id.reminderTitle)).perform(ViewActions.typeText(testData.title))
-        Espresso.onView(ViewMatchers.withId(R.id.reminderDescription)).perform(ViewActions.typeText(testData.description))
+        Espresso.onView(withId(R.id.reminderTitle)).perform(ViewActions.typeText(testData.title))
+        Espresso.onView(withId(R.id.reminderDescription)).perform(ViewActions.typeText(testData.description))
         Espresso.closeSoftKeyboard()
-        Espresso.onView(ViewMatchers.withId(R.id.saveReminder)).perform(ViewActions.click())
+        Espresso.onView(withId(R.id.saveReminder)).perform(ViewActions.click())
 
         Espresso.onView(ViewMatchers.withText(appContext.getString(R.string.reminder_saved)))
             .inRoot(RootMatchers.withDecorView(CoreMatchers.not(decorView)))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
 
-        Espresso.onView(ViewMatchers.withId(R.id.title))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-        Espresso.onView(ViewMatchers.withId(R.id.title))
-            .check(ViewAssertions.matches(ViewMatchers.withText(testData.title)))
+        Espresso.onView(withId(R.id.title)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        Espresso.onView(withId(R.id.title)).check(ViewAssertions.matches(ViewMatchers.withText(testData.title)))
 
-        Espresso.onView(ViewMatchers.withId(R.id.description))
+        Espresso.onView(withId(R.id.description))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-        Espresso.onView(ViewMatchers.withId(R.id.description))
+        Espresso.onView(withId(R.id.description))
             .check(ViewAssertions.matches(ViewMatchers.withText(testData.description)))
 
-        Espresso.onView(withId(R.id.location))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-        Espresso.onView(withId(R.id.location))
-            .check(ViewAssertions.matches(ViewMatchers.withText(testData.location)))
+        Espresso.onView(withId(R.id.location)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        Espresso.onView(withId(R.id.location)).check(ViewAssertions.matches(ViewMatchers.withText(testData.location)))
         activityScenario.close()
     }
 
@@ -229,7 +219,7 @@ class RemindersActivityTest :
         val activityScenario = ActivityScenario.launch(RemindersActivity::class.java)
         dataBindingIdlingResource.monitorActivity(activityScenario)
 
-        Espresso.onView(ViewMatchers.withId(R.id.addReminderFAB)).perform(ViewActions.click())
+        Espresso.onView(withId(R.id.addReminderFAB)).perform(ViewActions.click())
 
         val viewModel: SaveReminderViewModel = get()
         viewModel.reminderSelectedLocationStr.postValue(testData.location)
@@ -237,12 +227,11 @@ class RemindersActivityTest :
         viewModel.longitude.postValue(testData.longitude)
         viewModel.skipLocationForTesting = true
 
-        Espresso.onView(ViewMatchers.withId(R.id.reminderDescription)).perform(ViewActions.typeText(testData.description))
+        Espresso.onView(withId(R.id.reminderDescription)).perform(ViewActions.typeText(testData.description))
         Espresso.closeSoftKeyboard()
-        Espresso.onView(ViewMatchers.withId(R.id.saveReminder)).perform(ViewActions.click())
+        Espresso.onView(withId(R.id.saveReminder)).perform(ViewActions.click())
 
-        Espresso.onView(ViewMatchers.withId(com.google.android.material.R.id.snackbar_text))
-            .check(ViewAssertions.matches(ViewMatchers.withText(R.string.err_enter_title)))
+        Espresso.onView(withId(com.google.android.material.R.id.snackbar_text)).check(ViewAssertions.matches(ViewMatchers.withText(R.string.err_enter_title)))
         activityScenario.close()
     }
 
@@ -259,19 +248,19 @@ class RemindersActivityTest :
         val activityScenario = ActivityScenario.launch(RemindersActivity::class.java)
         dataBindingIdlingResource.monitorActivity(activityScenario)
 
-        Espresso.onView(ViewMatchers.withId(R.id.addReminderFAB)).perform(ViewActions.click())
+        Espresso.onView(withId(R.id.addReminderFAB)).perform(ViewActions.click())
 
         val viewModel: SaveReminderViewModel = get()
         viewModel.latitude.postValue(testData.latitude)
         viewModel.longitude.postValue(testData.longitude)
         viewModel.skipLocationForTesting = true
 
-        Espresso.onView(ViewMatchers.withId(R.id.reminderTitle)).perform(ViewActions.typeText(testData.title))
-        Espresso.onView(ViewMatchers.withId(R.id.reminderDescription)).perform(ViewActions.typeText(testData.description))
+        Espresso.onView(withId(R.id.reminderTitle)).perform(ViewActions.typeText(testData.title))
+        Espresso.onView(withId(R.id.reminderDescription)).perform(ViewActions.typeText(testData.description))
         Espresso.closeSoftKeyboard()
-        Espresso.onView(ViewMatchers.withId(R.id.saveReminder)).perform(ViewActions.click())
+        Espresso.onView(withId(R.id.saveReminder)).perform(ViewActions.click())
 
-        Espresso.onView(ViewMatchers.withId(com.google.android.material.R.id.snackbar_text))
+        Espresso.onView(withId(com.google.android.material.R.id.snackbar_text))
             .check(ViewAssertions.matches(ViewMatchers.withText(R.string.err_select_location)))
         activityScenario.close()
     }
