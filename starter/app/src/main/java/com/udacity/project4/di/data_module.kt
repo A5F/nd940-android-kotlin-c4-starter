@@ -7,7 +7,7 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
 val dataModule = module {
-    single { RemindersLocalRepository(get()) as ReminderDataSource }
+    single<ReminderDataSource> { RemindersLocalRepository(get()) }
 
     single { LocalDB.createRemindersDao(androidContext()) }
 

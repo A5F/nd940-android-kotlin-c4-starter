@@ -1,8 +1,6 @@
 package com.udacity.project4.locationreminders.reminderslist
 
 import android.app.Application
-import android.content.Context
-import android.os.Bundle
 import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -22,7 +20,6 @@ import com.udacity.project4.util.DataBindingIdlingResource
 import com.udacity.project4.util.monitorFragment
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
-import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -33,7 +30,6 @@ import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
 import org.koin.dsl.module
 import org.mockito.Mockito
-import org.mockito.Mockito.mock
 import org.mockito.Mockito.verify
 
 @RunWith(AndroidJUnit4::class)
@@ -65,59 +61,59 @@ class ReminderListFragmentTest {
             modules(override)
         }
 
-        dataSource = GlobalContext.get().koin.get()
+        dataSource = GlobalContext.get().get()
     }
 
-//     test the navigation of the fragments.
-@Test
-fun testNavigationToSaveReminderFragment() {
-    val scenario = launchFragmentInContainer<ReminderListFragment>(themeResId = R.style.AppTheme)
-    dataBindingIdlingResource.monitorFragment(scenario)
+    //     test the navigation of the fragments.
+    @Test
+    fun testNavigationToSaveReminderFragment() {
+        val scenario = launchFragmentInContainer<ReminderListFragment>(themeResId = R.style.AppTheme)
+        dataBindingIdlingResource.monitorFragment(scenario)
 
-    val navController = Mockito.mock(NavController::class.java)
-    scenario.onFragment {
-        Navigation.setViewNavController(it.view!!, navController)
+        val navController = Mockito.mock(NavController::class.java)
+        scenario.onFragment {
+            Navigation.setViewNavController(it.view!!, navController)
+        }
+        onView(withId(R.id.addReminderFAB)).perform(click())
+        verify(navController).navigate(ReminderListFragmentDirections.toSaveReminder())
     }
-    onView(withId(R.id.addReminderFAB)).perform(click())
-    verify(navController).navigate(ReminderListFragmentDirections.toSaveReminder())
-}
 
-//     test the displayed data on the UI.
-@Test
-fun testDisplayDataOnFragment() {
-    val testData = ReminderDTO(
-        "Title",
-        "Description",
-        "location",
-        0.0, 0.0
-    )
+    //     test the displayed data on the UI.
+    @Test
+    fun testDisplayDataOnFragment() {
+        val testData = ReminderDTO(
+            "Title",
+            "Description",
+            "location",
+            0.0, 0.0
+        )
 
-    runBlocking { dataSource.saveReminder(testData) }
+        runBlocking { dataSource.saveReminder(testData) }
 
-    val scenario = launchFragmentInContainer<ReminderListFragment>(themeResId = R.style.AppTheme)
-    dataBindingIdlingResource.monitorFragment(scenario)
+        val scenario = launchFragmentInContainer<ReminderListFragment>(themeResId = R.style.AppTheme)
+        dataBindingIdlingResource.monitorFragment(scenario)
 
-    onView(withId(R.id.title)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-    onView(withId(R.id.title)).check(ViewAssertions.matches(ViewMatchers.withText(testData.title)))
+        onView(withId(R.id.title)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        onView(withId(R.id.title)).check(ViewAssertions.matches(ViewMatchers.withText(testData.title)))
 
-    onView(withId(R.id.description)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-    onView(withId(R.id.description)).check(ViewAssertions.matches(ViewMatchers.withText(testData.description)))
+        onView(withId(R.id.description)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        onView(withId(R.id.description)).check(ViewAssertions.matches(ViewMatchers.withText(testData.description)))
 
-    onView(withId(R.id.location)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-    onView(withId(R.id.location)).check(ViewAssertions.matches(ViewMatchers.withText(testData.location)))
-}
+        onView(withId(R.id.location)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        onView(withId(R.id.location)).check(ViewAssertions.matches(ViewMatchers.withText(testData.location)))
+    }
 
 
 
     //     add testing for the error messages.
-@Test
-fun testDisplayNoDataOnFragment() {
-    runBlocking { dataSource.deleteAllReminders() }
+    @Test
+    fun testDisplayNoDataOnFragment() {
+        runBlocking { dataSource.deleteAllReminders() }
 
-    val scenario = launchFragmentInContainer<ReminderListFragment>(themeResId = R.style.AppTheme)
-    dataBindingIdlingResource.monitorFragment(scenario)
+        val scenario = launchFragmentInContainer<ReminderListFragment>(themeResId = R.style.AppTheme)
+        dataBindingIdlingResource.monitorFragment(scenario)
 
-    onView(withId(R.id.noDataTextView)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-    onView(withId(R.id.noDataTextView)).check(ViewAssertions.matches(ViewMatchers.withText((ApplicationProvider.getApplicationContext() as Application).getString(R.string.no_data))))
-}
+        onView(withId(R.id.noDataTextView)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        onView(withId(R.id.noDataTextView)).check(ViewAssertions.matches(ViewMatchers.withText((ApplicationProvider.getApplicationContext() as Application).getString(R.string.no_data))))
+    }
 }

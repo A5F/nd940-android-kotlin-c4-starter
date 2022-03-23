@@ -5,7 +5,6 @@ import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.test.core.app.ApplicationProvider
-import androidx.test.espresso.Espresso
 import androidx.test.espresso.Espresso.closeSoftKeyboard
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.IdlingRegistry
@@ -15,7 +14,7 @@ import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.MediumTest
 import com.udacity.project4.R
-import com.udacity.project4.data.FakeAndroidDataSource
+import com.udacity.project4.locationreminders.data.FakeAndroidDataSource
 import com.udacity.project4.util.DataBindingIdlingResource
 import com.udacity.project4.util.monitorFragment
 import com.udacity.project4.utils.EspressoIdlingResource
@@ -24,7 +23,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.*
 import org.junit.runner.RunWith
 import org.koin.android.ext.koin.androidContext
-import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.context.GlobalContext
 import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
@@ -74,7 +72,7 @@ class SaveReminderFragmentTest {
             modules(override)
         }
 
-        viewModel = GlobalContext.get().koin.get()
+        viewModel = GlobalContext.get().get()
     }
 
     @Test

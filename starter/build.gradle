@@ -37,7 +37,7 @@ ext {
     //roboelectic have problem with target 31
     //failed to configure com.udacity.project4.locationreminders.savereminder.SaveReminderViewModelTest.testValidationWithNoTitleData: Package targetSdkVersion=31 > maxSdkVersion=30
     targetSdkVersion = 30
-    compileSdkVersion = 31
+    compileSdkVersion = 32
 
     // App dependencies
     androidXVersion = '1.0.0'
@@ -47,7 +47,7 @@ ext {
     archLifecycleVersion = '2.4.1'
     cardVersion = '1.0.0'
     materialVersion = '1.5.0'
-    fragmentVersion = '1.4.1'
+    fragmentVersion = '1.1.0'//''1.4.1' ci sono modifiche su fragment test, da studiare aggiornamento
     recyclerViewVersion = '1.2.1'
     mockitoVersion = '2.8.9'
     constraintVersion = '2.1.3'
