@@ -4,6 +4,7 @@ import android.view.View
 import androidx.databinding.BindingAdapter
 import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.udacity.project4.base.BaseRecyclerViewAdapter
 
 
@@ -44,4 +45,16 @@ object BindingAdapters {
             }
         }
     }
+
+    /**
+     * Use this binding adapter to show and hide the views using boolean variables
+     */
+    @BindingAdapter("android:setRefreshingStatus")
+    @JvmStatic
+    fun setRefreshingStatus(view: View, refreshingActive: Boolean = false) {
+        if (view is SwipeRefreshLayout) {
+            view.isRefreshing = refreshingActive
+        }
+    }
+
 }
