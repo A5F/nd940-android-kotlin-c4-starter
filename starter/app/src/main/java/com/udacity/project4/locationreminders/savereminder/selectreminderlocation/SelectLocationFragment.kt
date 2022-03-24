@@ -3,19 +3,24 @@ package com.udacity.project4.locationreminders.savereminder.selectreminderlocati
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.location.Criteria
 import android.location.Location
 import android.location.LocationManager
+import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
+import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.SupportMapFragment
@@ -23,6 +28,8 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.material.snackbar.Snackbar
+import com.udacity.project4.BuildConfig
 import com.udacity.project4.R
 import com.udacity.project4.base.BaseFragment
 import com.udacity.project4.databinding.FragmentSelectLocationBinding
@@ -47,6 +54,8 @@ class SelectLocationFragment : BaseFragment() {
 
         binding.viewModel = _viewModel
         binding.lifecycleOwner = this
+
+
 
         setHasOptionsMenu(true)
         setDisplayHomeAsUpEnabled(true)
@@ -84,7 +93,9 @@ class SelectLocationFragment : BaseFragment() {
 
     @SuppressLint("MissingPermission")
     private fun enableMyLocation() {
+        Log.e("selectLocationFragment", "enableMyLocation")
         if (isPermissionGranted()) {
+            Log.e("selectLocationFragment", "isPermissionGranted true")
             val zoomLevel = 15f
             mMap.isMyLocationEnabled = true
 
@@ -101,6 +112,9 @@ class SelectLocationFragment : BaseFragment() {
             }
         }
         else {
+            Log.e("selectLocationFragment", "request permission ")
+
+
             requestPermissions(
                 arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
                 REQUEST_LOCATION_PERMISSION
@@ -200,4 +214,21 @@ class SelectLocationFragment : BaseFragment() {
             updateSaveButton()
         }
     }
+
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray) {
+       // super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        Log.e("selectLocationFragment", "onRequestPermissionsResult")
+        if (requestCode == REQUEST_LOCATION_PERMISSION) {
+            if (grantResults.isNotEmpty() && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                enableMyLocation()
+            } else {
+                _viewModel.showSnackBar.value = getString(R.string.permission_denied_explanation)
+            }
+        }
+    }
+
 }

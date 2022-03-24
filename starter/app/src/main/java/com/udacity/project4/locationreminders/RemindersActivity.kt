@@ -1,6 +1,7 @@
 package com.udacity.project4.locationreminders
 
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -30,5 +31,15 @@ class RemindersActivity : AppCompatActivity() {
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        Log.e("RemindersActivity", "onRequestPermissionsResult ")
+
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 }
