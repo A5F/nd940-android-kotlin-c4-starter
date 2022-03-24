@@ -16,8 +16,14 @@
         android:gravity="center"
         android:orientation="vertical"
         tools:context=".locationreminders.ReminderDescriptionActivity">
-        <!--TODO: add the design of the reminder details-->
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:text="@string/content_text"
+            android:textSize="@dimen/text_size_large"/>
         <TextView
             android:id="@+id/titleLabel"
             android:layout_width="match_parent"
@@ -25,6 +31,7 @@
             android:text="Title:"
             android:textSize="@dimen/text_size_large"
             android:textStyle="bold"
+            android:gravity="center"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -38,6 +45,8 @@
         <TextView
             android:id="@+id/descriptionLabel"
             android:layout_width="match_parent"
+            android:gravity="center"
+
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/padding_medium"
             android:text="Description:"
@@ -61,6 +70,8 @@
             android:text="Location Name:"
             android:textStyle="bold"
             android:textSize="@dimen/text_size_large"
+            android:gravity="center"
+
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -71,12 +82,25 @@
             android:layout_height="wrap_content"
             android:text="@{reminderDataItem.location}"/>
 
-        <fragment
-            android:id="@+id/mapView"
-            android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:layout_marginTop="@dimen/padding_large"
-            android:name="com.google.android.gms.maps.SupportMapFragment" />
 
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:text="Latitude:"/>
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{reminderDataItem.latitude.toString()}"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:text="Longitude:"/>
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{reminderDataItem.longitude.toString()}"/>
     </LinearLayout>
 </layout>
