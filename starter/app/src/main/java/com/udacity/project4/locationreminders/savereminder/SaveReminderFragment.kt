@@ -15,7 +15,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat.checkSelfPermission
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -108,14 +107,18 @@ class SaveReminderFragment : BaseFragment() {
         val geofence = getGeoFence(reminderData)
         val geofencingRequest = getGeoFencingRequest(geofence)
 
-        geofencingClient.addGeofences(geofencingRequest, geofencePendingIntent)?.run {
-            addOnSuccessListener {
-                Log.e("Add Geofence", geofence.requestId)
-                _viewModel.validateAndSaveReminder(reminderData)
-            }
-            addOnFailureListener {
-                if ((it.message != null)) {
-                    Log.w(TAG, it.message, it)
+        geofencingClient.removeGeofences(geofencePendingIntent).run {
+            addOnCompleteListener {
+                geofencingClient.addGeofences(geofencingRequest, geofencePendingIntent).run {
+                    addOnSuccessListener {
+                        Log.e("Add Geofence", geofence.requestId)
+                        _viewModel.validateAndSaveReminder(reminderData)
+                    }
+                    addOnFailureListener {
+                        if ((it.message != null)) {
+                            Log.w(TAG, it.message, it)
+                        }
+                    }
                 }
             }
         }
@@ -140,11 +143,11 @@ class SaveReminderFragment : BaseFragment() {
         return Geofence.Builder()
             .setRequestId(reminderData.id)
             .setCircularRegion(
-                reminderData.latitude?:0.0,
-                reminderData.longitude?:0.0,
+                reminderData.latitude ?: 0.0,
+                reminderData.longitude ?: 0.0,
                 GEOFENCE_RADIUS_IN_METERS
             )
-            .setExpirationDuration(1000000L)
+            .setExpirationDuration(Geofence.NEVER_EXPIRE)
             .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER)
             .build()
     }
@@ -197,7 +200,7 @@ class SaveReminderFragment : BaseFragment() {
             else -> REQUEST_FOREGROUND_ONLY_PERMISSIONS_REQUEST_CODE
         }
         Log.d(TAG, "Request foreground only location permission")
-        ActivityCompat.requestPermissions(requireActivity(),
+        requestPermissions(
             permissionsArray,
             resultCode
         )
