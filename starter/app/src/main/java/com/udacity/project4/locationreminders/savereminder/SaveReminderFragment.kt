@@ -107,8 +107,8 @@ class SaveReminderFragment : BaseFragment() {
         val geofence = getGeoFence(reminderData)
         val geofencingRequest = getGeoFencingRequest(geofence)
 
-        geofencingClient.removeGeofences(geofencePendingIntent).run {
-            addOnCompleteListener {
+       // geofencingClient.removeGeofences(geofencePendingIntent).run {
+      //      addOnCompleteListener {
                 geofencingClient.addGeofences(geofencingRequest, geofencePendingIntent).run {
                     addOnSuccessListener {
                         Log.e("Add Geofence", geofence.requestId)
@@ -120,8 +120,8 @@ class SaveReminderFragment : BaseFragment() {
                         }
                     }
                 }
-            }
-        }
+//            }
+//        }
     }
 
     private fun getReminderData(): ReminderDataItem {
